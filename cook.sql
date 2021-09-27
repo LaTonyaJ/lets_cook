@@ -6,7 +6,9 @@ CREATE TABLE user
 (
     id SERIAL PRIMARY KEY,
     first_name TEXT NOT NULL,
-    last_name TEXT NOT NULL
+    last_name TEXT NOT NULL,
+    username TEXT NOT NULL UNIQUE,
+    user_password TEXT NOT NULL
 );
 
 CREATE TABLE favorites
