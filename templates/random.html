@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block title %}
+<h1 class="display-1">Today's Random Recipe</h1>
+{% endblock %} {% block content %}
+<div id="rand_recipe">
+  <h4 id="rand_title" class="display-4">
+    {{resp['meals'][0]['strMeal']}} <a href="#"><small>Like</small></a>
+  </h4>
+  <img
+    id="rand_img"
+    src="{{resp['meals'][0]['strMealThumb']}}"
+    alt="recipe image"
+    class="img-thumbnail"
+  />
+  <ul></ul>
+  <p id="rand_instruct">{{resp['meals'][0]['strInstructions']}}</p>
+</div>
+{% endblock %}

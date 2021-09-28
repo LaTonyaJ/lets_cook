@@ -1,0 +1,9 @@
+.navbar {
+  background-color: rgb(80, 53, 3);
+  border: 2px solid black;
+}
+
+#rand_recipe {
+  width: 60%;
+  border: 2px solid black;
+}

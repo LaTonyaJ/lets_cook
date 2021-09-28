@@ -1,8 +1,10 @@
+DROP DATABASE lets_cook;
+
 CREATE DATABASE lets_cook;
 
 \c lets_cook;
 
-CREATE TABLE user
+CREATE TABLE users
 (
     id SERIAL PRIMARY KEY,
     first_name TEXT NOT NULL,
@@ -11,9 +13,18 @@ CREATE TABLE user
     user_password TEXT NOT NULL
 );
 
+CREATE TABLE meals
+(
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL UNIQUE,
+    img TEXT,
+    instructions TEXT NOT NULL
+);
+
 CREATE TABLE favorites
 (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL REFERENCES user,
-    meal_id INTEGER NOT NULL UNIQUE
+    user_id INTEGER NOT NULL REFERENCES users,
+    meal_id INTEGER NOT NULL REFERENCES meals
 );
+
