@@ -16,16 +16,21 @@
       integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
       crossorigin="anonymous"
     ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+      integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+      crossorigin="anonymous"
+    ></script>
     <title>Document</title>
   </head>
   <body>
     <nav class="navbar">
       <div class="navbar-brand">
-        <a href="#" class="nav-link"><b>Let's Cook</b></a>
+        <a href="/" class="nav-link"><b>Let's Cook</b></a>
       </div>
       <div class="navbar-right">
-        <a href="#" id="nav-login">login/signup</a>
-        <a href="#" id="nav-logout">logout</a>
+        <a href="/login" id="nav-login">login/signup</a>
+        <a href="/logout" id="nav-logout">logout</a>
       </div>
     </nav>
     {% with messages = get_flashed_messages() %} {% if messages %}
@@ -37,5 +42,6 @@
     {% endif %} {% endwith %} {% block title %}{% endblock %}
 
     <div class="container">{% block content %}{% endblock %}</div>
+    <script src="/static/app.js"></script>
   </body>
 </html>
