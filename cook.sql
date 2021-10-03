@@ -23,6 +23,7 @@ CREATE TABLE favorites
 (
     id SERIAL PRIMARY KEY,
     users_id INTEGER NOT NULL REFERENCES users,
-    meals_id INTEGER NOT NULL REFERENCES meals
+    meals_id INTEGER NOT NULL REFERENCES meals,
+    img TEXT
 );
 

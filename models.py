@@ -1,3 +1,4 @@
+from enum import unique
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from sqlalchemy.orm import backref
@@ -75,3 +76,5 @@ class Favorites(db.Model):
     users_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     meals_id = db.Column(db.Integer, db.ForeignKey('meals.id'))
+
+    img = db.Column(db.Text)

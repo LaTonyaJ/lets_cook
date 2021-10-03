@@ -1,3 +1,9 @@
 {% extends 'base.html' %}{% block title %}
-<h1>{{user.first_name}}'s Favorite Melas!</h1>
-{% endblock %}{% block content %}{% endblock %}
+<h1>{{user.first_name}}'s Favorite Meals!</h1>
+{% endblock %}{% block content %}
+<div>
+  {% for like in user.favs %}
+  <img src='{{like.img}}' class="img-thumbnail" id='fav-thumb'></img>
+  {% endfor %}
+</div>
+{% endblock %}

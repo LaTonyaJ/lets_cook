@@ -1,4 +1,4 @@
-from flask import Flask, request, session
+from flask import Flask, request, session, g
 from flask.helpers import flash
 from flask.templating import render_template
 from flask_debugtoolbar import DebugToolbarExtension
@@ -7,6 +7,7 @@ from models import db, connect_db, Users, Favorites, Meals
 import requests
 from forms import SignUp, Login
 import pdb
+from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
 
@@ -20,6 +21,31 @@ app.config['SECRET_KEY'] = 'Whatz4DiNNer?2nite'
 debug = DebugToolbarExtension(app)
 
 
+@app.before_request
+def add_user_to_g():
+    """If we're logged in, add curr user to Flask global."""
+
+    if 'username' in session:
+        g.user = Users.query.filter(
+            Users.username == session['username']).first()
+
+    else:
+        g.user = None
+
+
+def do_login(user):
+    """Log in user."""
+
+    session['username'] = user.username.lower()
+
+
+def do_logout():
+    """Logout user."""
+
+    if 'username' in session:
+        del session['username']
+
+
 @app.route('/')
 def homepage():
     """Redirect to Random Recipe"""
@@ -28,16 +54,19 @@ def homepage():
 
 @app.route('/recipe')
 def random_recipe():
+    try:
+        rr = requests.get('http://www.themealdb.com/api/json/v1/1/random.php')
+        resp = rr.json()
+        meal = Meals(api_id=resp['meals'][0]['idMeal'])
+        # print(resp['meals'][0])
+        # print(rr.status_code)
+        db.session.add(meal)
+        db.session.commit()
 
-    rr = requests.get('http://www.themealdb.com/api/json/v1/1/random.php')
-    resp = rr.json()
-    meal = Meals(api_id=resp['meals'][0]['idMeal'])
-    print(resp['meals'][0])
-    # print(rr.status_code)
-    db.session.add(meal)
-    db.session.commit()
+        return render_template('random.html', resp=resp, meal=meal)
 
-    return render_template('random.html', resp=resp, meal=meal)
+    except IntegrityError:
+        return redirect('/')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -60,7 +89,7 @@ def create_user():
             username, password, first_name, last_name)
 
         db.session.commit()
-        session['username'] = new_user.username
+        do_login(new_user)
         flash('User added!')
         return redirect('/')
 
@@ -84,7 +113,7 @@ def user_login_form():
         new_user = Users.authenticate(username, password)
 
         if new_user:
-            session['username'] = new_user.username.lower()
+            do_login(new_user)
             return redirect(f"/favorites/{session['username']}")
         else:
             form.username.errors = ['Invalid username/password']
@@ -96,8 +125,8 @@ def user_login_form():
 @app.route('/logout')
 def logout():
     """Log out user"""
-
-    session.pop('username')
+    do_logout()
+    # session.pop('username')
     return redirect('/login')
 
 
@@ -109,8 +138,9 @@ def user_fav_recipes(username):
         flash('Must Login to like')
         return redirect('/')
 
-    session_username = session['username']
-    user = Users.query.filter(username == session_username).first()
+    # session_username = session['username']
+    # pdb.set_trace()
+    user = Users.query.filter_by(username=session['username']).first()
     return render_template('favorites.html', user=user)
 
 
@@ -122,11 +152,23 @@ def liked(meals_id):
 
     # add meal to fav
     meal = Meals.query.get(meals_id)
-    username = session['username']
+    id = meal.api_id
+    print(id)
+    # username = session['username']
     # pdb.set_trace()
-    user = Users.query.filter(Users.username == username).first()
-    fav = Favorites(users_id=user.id, meals_id=meal.id)
+    user = Users.query.filter_by(username=session['username']).first()
+    # get meal by id
+    try:
+        l = requests.get(
+            f"http://www.themealdb.com/api/json/v1/1/lookup.php?i={id}")
+        resp = l.json()
+        fav = Favorites(users_id=user.id, meals_id=meal.id,
+                        img=resp['meals'][0]['strMealThumb'])
 
-    db.session.add(fav)
-    db.session.commit()
-    return redirect(f"/favorites/{session['username']}")
+        db.session.add(fav)
+        db.session.commit()
+        return redirect(f"/favorites/{session['username']}")
+
+    except IntegrityError:
+        flash('Favorite not Added!')
+        return redirect('/')
