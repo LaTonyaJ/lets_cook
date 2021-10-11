@@ -3,7 +3,10 @@
 {% endblock %}{% block content %}
 <div>
   {% for like in user.favs %}
-  <img src='{{like.img}}' class="img-thumbnail" id='fav-thumb'></img>
+  <div class='thumb'>
+    <img src='{{like.img}}' class="img-thumbnail" id='thumb-{{like.id}}'></img>
+  </div>
   {% endfor %}
 </div>
+<p id='fav_instructions'></p>
 {% endblock %}

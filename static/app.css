@@ -1,14 +1,96 @@
 .navbar {
   background-color: rgb(80, 53, 3);
-  border: 2px solid black;
 }
 
 #rand_recipe {
   width: 60%;
-  border: 2px solid black;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+#rand_img {
+  min-width: 400px;
+  min-height: 400px;
+}
+
+#rand_h1 {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 #fav-thumb {
   width: 200px;
   height: 200px;
+}
+
+body {
+  background-color: blanchedalmond;
+}
+
+h4,
+div a {
+  text-decoration: none;
+}
+
+#signup {
+  width: 50%;
+  margin: auto;
+  margin-top: 1rem;
+  box-shadow: 5px 5px black;
+  background-color: rgb(196, 194, 188);
+  border-radius: 3px;
+}
+
+#login {
+  width: 30%;
+  margin: auto;
+  margin-top: 3rem;
+  box-shadow: 5px 5px black;
+  background-color: rgb(196, 194, 188);
+  border-radius: 3px;
+  text-align: center;
+  padding: 1rem;
+}
+
+#filter {
+  margin: auto;
+  width: 50%;
+  border: 3px solid black;
+  border-radius: 3px;
+}
+
+#rand_instruct {
+  justify-content: left;
+  list-style: none;
+}
+
+.thumb {
+  width: 200px;
+  height: 200px;
+  display: inline-block;
+}
+
+#fav_card {
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  width: 60%;
+  justify-content: space-between;
+}
+
+#card_img {
+  width: auto;
+  height: 400px;
+  max-width: 400px;
+}
+
+#card_ing {
+  /* flex-wrap: wrap; */
+  list-style: none;
+}
+
+#fav_title {
+  text-align: center;
 }

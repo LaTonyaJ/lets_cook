@@ -1,13 +1,17 @@
+from sys import exc_info
 from flask import Flask, request, session, g
-from flask.helpers import flash
+from flask.helpers import flash, url_for
 from flask.templating import render_template
 from flask_debugtoolbar import DebugToolbarExtension
 from werkzeug.utils import redirect
-from models import db, connect_db, Users, Favorites, Meals
+from models import Ingredients, db, connect_db, Users, Favorites, Instructions
 import requests
-from forms import SignUp, Login
+from forms import SignUp, Login, Filter
 import pdb
 from sqlalchemy.exc import IntegrityError
+import random
+import re
+
 
 app = Flask(__name__)
 
@@ -23,7 +27,7 @@ debug = DebugToolbarExtension(app)
 
 @app.before_request
 def add_user_to_g():
-    """If we're logged in, add curr user to Flask global."""
+    """If we're logged in, add user to Flask global."""
 
     if 'username' in session:
         g.user = Users.query.filter(
@@ -52,18 +56,38 @@ def homepage():
     return redirect('/recipe')
 
 
-@app.route('/recipe')
+@app.route('/recipe', methods=['GET', 'POST'])
 def random_recipe():
+
     try:
         rr = requests.get('http://www.themealdb.com/api/json/v1/1/random.php')
         resp = rr.json()
-        meal = Meals(api_id=resp['meals'][0]['idMeal'])
-        # print(resp['meals'][0])
-        # print(rr.status_code)
-        db.session.add(meal)
-        db.session.commit()
 
-        return render_template('random.html', resp=resp, meal=meal)
+        api_id = resp['meals'][0]['idMeal']
+        steps = re.split(r'STEP|[\n\r]',
+                         resp['meals'][0]['strInstructions'])
+        # print(resp['meals'][0])
+
+        form = Filter()
+
+        if form.validate_on_submit():
+            category = form.category.data
+            rr = requests.get(
+                f'http://www.themealdb.com/api/json/v1/1/filter.php?c={category}')
+            resp0 = rr.json()
+            # print(resp)
+            i = random.randrange(10)
+            api_id = resp0['meals'][i]['idMeal']
+            resp = requests.get(
+                f'http://www.themealdb.com/api/json/v1/1/lookup.php?i={api_id}')
+            resp_json = resp.json()
+            steps = re.split(r'STEP|[\r\n]',
+                             resp_json['meals'][0]['strInstructions'])
+            return render_template('random.html', i=0, resp=resp_json, api_id=api_id, form=form, steps=steps)
+
+        else:
+            i = 0
+            return render_template('random.html', i=i, resp=resp, api_id=api_id, form=form, steps=steps)
 
     except IntegrityError:
         return redirect('/')
@@ -144,31 +168,67 @@ def user_fav_recipes(username):
     return render_template('favorites.html', user=user)
 
 
-@app.route('/liked/<int:meals_id>')
-def liked(meals_id):
+@app.route('/liked/<int:api_id>')
+def liked(api_id):
 
     if 'username' not in session:
+        flash('Must Login to Like!')
         return redirect('/')
-
-    # add meal to fav
-    meal = Meals.query.get(meals_id)
-    id = meal.api_id
-    print(id)
-    # username = session['username']
-    # pdb.set_trace()
-    user = Users.query.filter_by(username=session['username']).first()
-    # get meal by id
     try:
-        l = requests.get(
-            f"http://www.themealdb.com/api/json/v1/1/lookup.php?i={id}")
-        resp = l.json()
-        fav = Favorites(users_id=user.id, meals_id=meal.id,
-                        img=resp['meals'][0]['strMealThumb'])
+
+        # add meal to fav
+        meal = requests.get(
+            f"http://www.themealdb.com/api/json/v1/1/lookup.php?i={api_id}")
+        # pdb.set_trace()
+        user = Users.query.filter_by(username=session['username']).first()
+        # get meal by id
+
+        resp = meal.json()
+        fav = Favorites(
+            users_id=user.id, img=resp['meals'][0]['strMealThumb'], api_id=resp['meals'][0]['idMeal'], recipe_name=resp['meals'][0]['strMeal'])
 
         db.session.add(fav)
+        db.session.commit()
+
+        step = re.split(r'STEP|[\r\n]',
+                        resp['meals'][0]['strInstructions'])
+        steps = Instructions(favorites_id=fav.id,
+                             steps=step)
+
+        items = []
+        for i in range(1, 20):
+            if resp['meals'][0][f'strIngredient{i}'] != '' or 'NULL':
+                items.append(resp['meals'][0][f'strIngredient{i}'])
+                i = i + 1
+
+        ings = Ingredients(favorites_id=fav.id, items=items)
+
+        db.session.add(steps)
+        db.session.add(ings)
         db.session.commit()
         return redirect(f"/favorites/{session['username']}")
 
     except IntegrityError:
+        print()
         flash('Favorite not Added!')
         return redirect('/')
+
+
+@app.route('/favorite/<int:favorites_id>')
+def show_fav(favorites_id):
+
+    fav = Favorites.query.get(favorites_id)
+    instructions = Instructions.query.get(favorites_id)
+    items = Ingredients.query.get(favorites_id)
+
+    return render_template('favorite.html', fav=fav, instructions=instructions, items=items)
+
+
+@app.route('/delete/<int:favorites_id>', methods=['POST'])
+def remove_favorite(favorites_id):
+
+    fav = Favorites.query.get(favorites_id)
+    db.session.delete(fav)
+    db.session.commit()
+
+    return redirect(url_for('.user_fav_recipes'))

@@ -29,8 +29,9 @@
         <a href="/" class="nav-link"><b>Let's Cook</b></a>
       </div>
       <div class="navbar-right">
-        <a href="/login" id="nav-login">login/signup</a>
-        <a href="/logout" id="nav-logout">logout</a>
+        <a href="/login" id="nav-login">Login/Signup</a>
+        <br />
+        <a href="/logout" id="nav-logout">Logout</a>
       </div>
     </nav>
     {% with messages = get_flashed_messages() %} {% if messages %}
@@ -39,9 +40,9 @@
       <li>{{ message }}</li>
       {% endfor %}
     </ul>
-    {% endif %} {% endwith %} {% block title %}{% endblock %}
-
-    <div class="container">{% block content %}{% endblock %}</div>
+    {% endif %} {% endwith %} {% block title %}{% endblock %} {% block content
+    %}{% endblock %}
     <script src="/static/app.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.js"></script>
   </body>
 </html>

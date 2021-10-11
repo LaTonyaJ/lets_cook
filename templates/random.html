@@ -1,18 +1,39 @@
 {% extends 'base.html' %} {% block title %}
-<h1 class="display-2">Today's Random Recipe</h1>
+<h1 class="display-2" id="rand_h1">Random Recipe</h1>
 {% endblock %} {% block content %}
+<form id="filter" method="POST" class="row g-3">
+  {{form.hidden_tag()}} {% for field in form if field.widget.input_type !=
+  'hidden' %}
+  <div class="col-auto">
+    <b>{{field.label(class_='form-label')}}</b> {% for
+    err in field.errors %} {{err}} {% endfor %}
+  </div>
+  <div class="col-auto">
+    {{field(class_='form-control')}} {% for
+    err in field.errors %} {{err}} {% endfor %}
+  </div>
+  {% endfor %}
+  <div class="col-auto">
+    <button class="btn btn-primary">Search</button>
+  </div>
+</form>
 <div id="rand_recipe">
   <h4 id="rand_title" class="display-4">
-    {{resp['meals'][0]['strMeal']}}
-    <a id="like_meal" href="/liked/{{meal.id}}"><small>Like</small></a>
+    <i>{{resp['meals'][i]['strMeal']}}</i>
+    <a id="like_meal" href="/liked/{{api_id}}"><small>&#10084</small></a>
   </h4>
   <img
     id="rand_img"
-    src="{{resp['meals'][0]['strMealThumb']}}"
+    src="{{resp['meals'][i]['strMealThumb']}}"
     alt="recipe image"
-    class="img-thumbnail"
+    class="card-img-top"
   />
   <ul></ul>
-  <p id="rand_instruct">{{resp['meals'][0]['strInstructions']}}</p>
+  <div id="rand_instruct">
+    {% for step in steps %}
+    <li>{{step}}</li>
+    <br>
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}

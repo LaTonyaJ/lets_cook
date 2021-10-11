@@ -25,3 +25,9 @@ class Login(FlaskForm):
                            InputRequired(), validators.Length(min=1, max=30)])
 
     password = PasswordField('Password', validators=[InputRequired()])
+
+
+class Filter(FlaskForm):
+
+    category = StringField('Filter By:', render_kw={
+                           "placeholder": "Category"}, validators=[validators.Length(max=30)])

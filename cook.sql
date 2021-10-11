@@ -13,17 +13,27 @@ CREATE TABLE users
     password TEXT NOT NULL
 );
 
-CREATE TABLE meals
-(
-    id SERIAL PRIMARY KEY,
-    api_id TEXT NOT NULL UNIQUE
-);
-
 CREATE TABLE favorites
 (
     id SERIAL PRIMARY KEY,
     users_id INTEGER NOT NULL REFERENCES users,
-    meals_id INTEGER NOT NULL REFERENCES meals,
-    img TEXT
+    img TEXT,
+    api_id TEXT UNIQUE,
+    recipe_name TEXT
 );
+
+CREATE TABLE instructions
+(
+    id SERIAL PRIMARY KEY,
+    favorites_id INTEGER NOT NULL REFERENCES favorites,
+    steps TEXT NOT NULL 
+); 
+
+CREATE TABLE ingredients
+(
+    id SERIAL PRIMARY KEY,
+    favorites_id INTEGER NOT NULL REFERENCES favorites,
+    items TEXT[] NOT NULL 
+);
+
 

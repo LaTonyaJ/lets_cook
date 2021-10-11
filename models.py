@@ -58,15 +58,6 @@ class Users(db.Model):
     favs = db.relationship('Favorites', backref='user')
 
 
-class Meals(db.Model):
-
-    __tablename__ = 'meals'
-
-    id = db.Column(db.Integer, unique=True, primary_key=True)
-
-    api_id = db.Column(db.Text, unique=True)
-
-
 class Favorites(db.Model):
 
     __tablename__ = 'favorites'
@@ -75,6 +66,36 @@ class Favorites(db.Model):
 
     users_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    meals_id = db.Column(db.Integer, db.ForeignKey('meals.id'))
-
     img = db.Column(db.Text)
+
+    api_id = db.Column(db.Text, unique=True)
+
+    recipe_name = db.Column(db.Text)
+
+    instructions = db.relationship(
+        'Instructions', backref='fav', cascade='all, delete-orphan')
+
+    ingredients = db.relationship(
+        'Ingredients', backref='fav', cascade='all, delete-orphan')
+
+
+class Instructions(db.Model):
+
+    __tablename__ = 'instructions'
+
+    id = db.Column(db.Integer, unique=True, primary_key=True)
+
+    favorites_id = db.Column(db.Integer, db.ForeignKey('favorites.id'))
+
+    steps = db.Column(db.Text, nullable=False)
+
+
+class Ingredients(db.Model):
+
+    __tablename__ = 'ingredients'
+
+    id = db.Column(db.Integer, unique=True, primary_key=True)
+
+    favorites_id = db.Column(db.Integer, db.ForeignKey('favorites.id'))
+
+    items = db.Column(db.Text, nullable=False)
