@@ -25,8 +25,8 @@
   height: 200px;
 }
 
-body {
-  background-color: blanchedalmond;
+html body {
+  background-color: rgba(96, 73, 6, 50%);
 }
 
 h4,
@@ -37,33 +37,32 @@ div a {
 #signup {
   width: 50%;
   margin: auto;
-  margin-top: 1rem;
+  margin-top: 5rem;
   box-shadow: 5px 5px black;
-  background-color: rgb(196, 194, 188);
+  background-color: #3a2c045e;
   border-radius: 3px;
+  padding: 1rem;
 }
 
 #login {
-  width: 30%;
+  width: 40%;
   margin: auto;
-  margin-top: 3rem;
+  margin-top: 5rem;
   box-shadow: 5px 5px black;
-  background-color: rgb(196, 194, 188);
-  border-radius: 3px;
-  text-align: center;
+  background-color: #3a2c045e;
   padding: 1rem;
 }
 
 #filter {
   margin: auto;
-  width: 50%;
-  border: 3px solid black;
-  border-radius: 3px;
+  margin-bottom: 2rem;
+  width: 40%;
+  text-align: center;
 }
 
 #rand_instruct {
-  justify-content: left;
   list-style: none;
+  text-align: start;
 }
 
 .thumb {
@@ -76,7 +75,7 @@ div a {
   display: flex;
   flex-wrap: wrap;
   margin: auto;
-  width: 60%;
+  width: 65%;
   justify-content: space-between;
 }
 
@@ -89,8 +88,21 @@ div a {
 #card_ing {
   /* flex-wrap: wrap; */
   list-style: none;
+  text-align: center;
 }
 
 #fav_title {
   text-align: center;
+}
+
+.remove {
+  text-align: center;
+}
+
+button {
+  border-radius: 20px;
+}
+
+#login a {
+  color: white;
 }

@@ -5,16 +5,14 @@
   {{form.hidden_tag()}} {% for field in form if field.widget.input_type !=
   'hidden' %}
   <div class="col-auto">
-    <b>{{field.label(class_='form-label')}}</b> {% for
-    err in field.errors %} {{err}} {% endfor %}
+    <b>{{field.label(class_='form-label')}}</b> 
   </div>
   <div class="col-auto">
-    {{field(class_='form-control')}} {% for
-    err in field.errors %} {{err}} {% endfor %}
+    {{field(class_='form-control form-control-sm')}}
   </div>
   {% endfor %}
   <div class="col-auto">
-    <button class="btn btn-primary">Search</button>
+    <button class="btn btn-primary btn-sm">Filter</button>
   </div>
 </form>
 <div id="rand_recipe">
@@ -31,8 +29,7 @@
   <ul></ul>
   <div id="rand_instruct">
     {% for step in steps %}
-    <li>{{step}}</li>
-    <br>
+      <p>{{step}}</p>
     {% endfor %}
   </div>
 </div>

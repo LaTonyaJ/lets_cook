@@ -2,6 +2,7 @@ from enum import unique
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from sqlalchemy.orm import backref
+import re
 
 db = SQLAlchemy()
 
@@ -88,6 +89,11 @@ class Instructions(db.Model):
     favorites_id = db.Column(db.Integer, db.ForeignKey('favorites.id'))
 
     steps = db.Column(db.Text, nullable=False)
+
+    @property
+    def get_steps(self):
+        steps = re.split(r'STEP|[\n\r]', self.steps)
+        return steps
 
 
 class Ingredients(db.Model):

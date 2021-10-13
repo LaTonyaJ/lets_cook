@@ -4,7 +4,7 @@ import os
 from unittest import TestCase
 from sqlalchemy import exc
 
-from models import db, Users, Meals, Favorites
+from models import db, Users, Favorites
 
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///cook-test"
 
@@ -41,8 +41,6 @@ class UserViewTest(TestCase):
     def test_get_recipe(self):
 
         with self.client as c:
-            with c.session_transaction() as sess:
-                sess['username'] = self.u.username
 
             meal = c.get('/recipe')
             self.assertIsNotNone(meal)

@@ -5,6 +5,9 @@
   {% for like in user.favs %}
   <div class='thumb'>
     <img src='{{like.img}}' class="img-thumbnail" id='thumb-{{like.id}}'></img>
+    <form class="remove">
+      <button formaction='/delete/{{like.id}}' formmethod="POST" class="btn btn-primary-sm">Remove</button>
+    </form>
   </div>
   {% endfor %}
 </div>

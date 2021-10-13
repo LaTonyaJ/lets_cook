@@ -1,4 +1,3 @@
-from sys import exc_info
 from flask import Flask, request, session, g
 from flask.helpers import flash, url_for
 from flask.templating import render_template
@@ -66,24 +65,26 @@ def random_recipe():
         api_id = resp['meals'][0]['idMeal']
         steps = re.split(r'STEP|[\n\r]',
                          resp['meals'][0]['strInstructions'])
-        # print(resp['meals'][0])
 
         form = Filter()
 
         if form.validate_on_submit():
-            category = form.category.data
-            rr = requests.get(
-                f'http://www.themealdb.com/api/json/v1/1/filter.php?c={category}')
-            resp0 = rr.json()
-            # print(resp)
-            i = random.randrange(10)
-            api_id = resp0['meals'][i]['idMeal']
-            resp = requests.get(
-                f'http://www.themealdb.com/api/json/v1/1/lookup.php?i={api_id}')
-            resp_json = resp.json()
-            steps = re.split(r'STEP|[\r\n]',
-                             resp_json['meals'][0]['strInstructions'])
-            return render_template('random.html', i=0, resp=resp_json, api_id=api_id, form=form, steps=steps)
+            try:
+                category = form.category.data
+                rr = requests.get(
+                    f'http://www.themealdb.com/api/json/v1/1/filter.php?c={category}')
+                resp0 = rr.json()
+                i = random.randrange(10)
+                api_id = resp0['meals'][i]['idMeal']
+                resp = requests.get(
+                    f'http://www.themealdb.com/api/json/v1/1/lookup.php?i={api_id}')
+                resp_json = resp.json()
+                steps = re.split(r'STEP|[\r\n]',
+                                 resp_json['meals'][0]['strInstructions'])
+                return render_template('random.html', i=0, resp=resp_json, api_id=api_id, form=form, steps=steps)
+
+            except TypeError:
+                return redirect('/')
 
         else:
             i = 0
@@ -190,14 +191,12 @@ def liked(api_id):
         db.session.add(fav)
         db.session.commit()
 
-        step = re.split(r'STEP|[\r\n]',
-                        resp['meals'][0]['strInstructions'])
         steps = Instructions(favorites_id=fav.id,
-                             steps=step)
+                             steps=resp['meals'][0]['strInstructions'])
 
         items = []
         for i in range(1, 20):
-            if resp['meals'][0][f'strIngredient{i}'] != '' or 'NULL':
+            if resp['meals'][0][f'strIngredient{i}'] != False:
                 items.append(resp['meals'][0][f'strIngredient{i}'])
                 i = i + 1
 
@@ -231,4 +230,4 @@ def remove_favorite(favorites_id):
     db.session.delete(fav)
     db.session.commit()
 
-    return redirect(url_for('.user_fav_recipes'))
+    return redirect(url_for('user_fav_recipes', username=session['username']))

@@ -26,7 +26,7 @@
   <body>
     <nav class="navbar">
       <div class="navbar-brand">
-        <a href="/" class="nav-link"><b>Let's Cook</b></a>
+        <a href="/" class="nav-link"><b>Lets Cook</b></a>
       </div>
       <div class="navbar-right">
         <a href="/login" id="nav-login">Login/Signup</a>
@@ -37,7 +37,7 @@
     {% with messages = get_flashed_messages() %} {% if messages %}
     <ul class="flashes">
       {% for message in messages %}
-      <li>{{ message }}</li>
+      <div class="alert-light">{{ message }}</div>
       {% endfor %}
     </ul>
     {% endif %} {% endwith %} {% block title %}{% endblock %} {% block content
