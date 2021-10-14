@@ -16,8 +16,12 @@ from config import SECRET_KEY
 
 app = Flask(__name__)
 
+uri = os.getenv("DATABASE_URL")  # or other relevant config var
+if uri and uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
-    'DATABASE_URL', "postgres:///lets_cook")
+    uri, "postgresql:///lets_cook")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
