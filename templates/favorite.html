@@ -5,10 +5,10 @@
     <div id='card_ing'>
         <h5>Ingredients:</h5>
         {% for item in items.items %}
-            {% if item != False %}
+            {% if item != None %}
                 <li>{{item}}</li>
             {% endif %}
-        {% endfor %}      
+        {% endfor %}
     </div>
     <div id='card_inst'>
         <h5><b>Recipe:</b></h5>

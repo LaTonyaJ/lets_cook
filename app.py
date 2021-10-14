@@ -21,7 +21,7 @@ if uri and uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
-    uri, "postgresql:///lets_cook")
+    f'{uri}', "postgresql:///lets_cook")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
@@ -203,7 +203,7 @@ def liked(api_id):
 
         items = []
         for i in range(1, 20):
-            if resp['meals'][0][f'strIngredient{i}'] != False:
+            if resp['meals'][0][f'strIngredient{i}'] != None:
                 items.append(resp['meals'][0][f'strIngredient{i}'])
                 i = i + 1
 

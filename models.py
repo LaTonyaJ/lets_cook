@@ -104,3 +104,8 @@ class Ingredients(db.Model):
     favorites_id = db.Column(db.Integer, db.ForeignKey('favorites.id'))
 
     items = db.Column(db.Text, nullable=False)
+
+    @property
+    def get_i(self):
+        i = self.items.split('')
+        return i
