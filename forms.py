@@ -16,7 +16,8 @@ class SignUp(FlaskForm):
     username = StringField('Username', validators=[
         validators.Length(min=1, max=30), InputRequired()])
 
-    password = PasswordField('Password', validators=[InputRequired()])
+    password = PasswordField('Password', validators=[
+                             InputRequired(), validators.Length(min=8, message='Password must contain a minimum of 8 characters')])
 
 
 class Login(FlaskForm):
