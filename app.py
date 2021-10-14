@@ -19,7 +19,7 @@ app = Flask(__name__)
 # uri = 'postgresql+psycopg2://usernmae:password@host:port/dbname'
 # if uri and uri.startswith("postgres://"):
 #     uri = uri.replace("postgres://", "postgresql://", 1)
-ENV = 'dev'
+ENV = 'prod'
 
 if ENV == 'dev':
     app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///lets_cook"
