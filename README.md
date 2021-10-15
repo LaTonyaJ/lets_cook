@@ -42,4 +42,5 @@ Creating your own CookBook is just a small bonus for the recipes you want to sav
 * Javascript
 * Heroku
 * SQL
-
+* HTML
+* CSS
