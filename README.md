@@ -3,9 +3,9 @@
 [API Link](https://www.themealdb.com/api.php)
 
 * My app is named **Lets's Cook**
-[Go to my app](https://lj-lets-cook.herokuapp.com/)
+* [Go to my app](https://lj-lets-cook.herokuapp.com/)
 
-My app is a random recipe generator with the ability to save your favorite meals. The <nav> has a logo. This logo is how you generate a new random recipe. You can also filter the search by submitting a category.
+My app is a random recipe generator with the ability to save your favorite meals. The navbar has a logo. This logo is how you generate a new random recipe. You can also filter the search by submitting a category.
 I chose this functionality to narrow the randomness to your own liking but also get a new recipe you've possibly never tried. 
 If the category is available, a recipe for that category is displayed, if the category is not valid then you get a random recipe. 
 To save favorites you have to create an account and log in.
@@ -26,7 +26,7 @@ Creating your own CookBook is just a small bonus for the recipes you want to sav
 1. If you are **NOT** logged in, you will get an error message..
 1. Logged in users will be redirected to their cookbook where they can see thumbnails of all their favorites.
     * Clicking an image takes you to the full recipe
-    * To remoe meals from favorites you can click the [Remove]()
+    * To remove meals from favorites click [Remove]()
 
 ---
 
