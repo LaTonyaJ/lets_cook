@@ -40,7 +40,7 @@ class AddFavorite(TestCase):
                 db.session.add(fav)
                 db.session.commit()
 
-                resp = c.get(f'/favorite/{fav.id}')
+                resp = c.get(f'/liked/{fav.api_id}')
 
                 self.assertEqual(resp.status_code, 200)
-                self.assertIn('recipe', str(resp.data))
+                # self.assertIn('<h1>recipe</h1>', str(resp.data))
