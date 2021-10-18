@@ -1,6 +1,6 @@
 # lets_cook
 ## Capstone Project 1
-[API Link](https://www.themealdb.com/api.php)
+[API Link](https://www.themealdb.com/api.php "The MealDB")
 
 * My app is named **Lets's Cook**
 * [Go to my app](https://lj-lets-cook.herokuapp.com/)
