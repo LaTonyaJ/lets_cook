@@ -16,7 +16,7 @@ import psycopg2
 
 app = Flask(__name__)
 
-# uri = 'postgresql+psycopg2://usernmae:password@host:port/dbname'
+# uri = 'postgresql+psycopg2://username:password@host:port/dbname'
 # if uri and uri.startswith("postgres://"):
 #     uri = uri.replace("postgres://", "postgresql://", 1)
 ENV = 'prod'
@@ -24,9 +24,7 @@ ENV = 'prod'
 if ENV == 'dev':
     app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///lets_cook"
 else:
-    # DATABASE_URL = os.environ['DATABASE_URL']
-    # conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-    # app.config['SQLALCHEMY_DATABASE_URI'] = conn
+
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
         'DATABASE_URL', 'postgresql:///lets_cook')
 
