@@ -1,8 +1,8 @@
-DROP DATABASE lets_cook;
+-- DROP DATABASE lets_cook;
 
-CREATE DATABASE lets_cook;
+-- CREATE DATABASE lets_cook;
 
-\c lets_cook;
+-- \c lets_cook;
 
 CREATE TABLE users
 (

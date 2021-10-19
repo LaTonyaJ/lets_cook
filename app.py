@@ -24,10 +24,11 @@ ENV = 'prod'
 if ENV == 'dev':
     app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///lets_cook"
 else:
-    DATABASE_URL = os.environ['DATABASE_URL']
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-
-    app.config['SQLALCHEMY_DATABASE_URI'] = conn
+    # DATABASE_URL = os.environ['DATABASE_URL']
+    # conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    # app.config['SQLALCHEMY_DATABASE_URI'] = conn
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+        'DATABASE_URL', 'postgresql:///lets_cook')
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
