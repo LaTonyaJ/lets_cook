@@ -28,11 +28,19 @@
       <div class="navbar-brand">
         <a href="/" class="nav-link"><b>Lets Cook</b></a>
       </div>
+      {% if not g.user %}
       <div class="navbar-right">
         <a href="/login" id="nav-login">Login/Signup</a>
         <br />
         <a href="/logout" id="nav-logout">Logout</a>
       </div>
+      {% else %}
+      <div class="navbar-right">
+        <a href="/favorites/{{g.user.username}}">My Favorites</a>
+        <br />
+        <a href="/logout" id="nav-logout">Logout</a>
+      </div>
+      {% endif %}
     </nav>
     {% with messages = get_flashed_messages() %} {% if messages %}
     <ul class="flashes">

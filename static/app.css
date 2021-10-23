@@ -2,17 +2,35 @@
   background-color: rgb(80, 53, 3);
 }
 
+.navbar-right {
+  margin-right: 2rem;
+}
+
 #rand_recipe {
-  width: 60%;
+  width: 80%;
   margin: auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  text-align: center;
+  justify-content: space-between;
+}
+
+#rand_title {
   text-align: center;
 }
 
 #rand_img {
-  min-width: 400px;
-  min-height: 400px;
+  min-width: 300px;
+  min-height: 300px;
+}
+
+#rand_ing {
+  list-style: none;
+  flex-direction: column;
+}
+
+#rand_instruct {
+  margin: 1rem;
 }
 
 #rand_h1 {

@@ -5,33 +5,48 @@
   {{form.hidden_tag()}} {% for field in form if field.widget.input_type !=
   'hidden' %}
   <div class="col-auto">
-    <b>{{field.label(class_='form-label')}}</b> 
+    <b>{{field.label(class_='form-label')}}</b>
   </div>
-  <div class="col-auto">
-    {{field(class_='form-control form-control-sm')}}
-  </div>
+  <div class="col-auto">{{field(class_='form-control form-control-sm')}}</div>
   {% endfor %}
   <div class="col-auto">
     <button class="btn btn-primary btn-sm">Filter</button>
   </div>
 </form>
 
-<div id="rand_recipe">
-  <h4 id="rand_title" class="display-4">
+<div id="rand_title">
+  <h4 class="display-4">
     <i>{{resp['meals'][i]['strMeal']}}</i>
     <a id="like_meal" href="/liked/{{api_id}}"><small>&#10084</small></a>
   </h4>
+</div>
+
+<div id="rand_recipe">
+<div id="rand_img">
   <img
-    id="rand_img"
+    
     src="{{resp['meals'][i]['strMealThumb']}}"
     alt="recipe image"
     class="card-img-top"
   />
-  <ul></ul>
-  <div id="rand_instruct">
-    {% for step in steps %}
-      <p>{{step}}</p>
-    {% endfor %}
-  </div>
 </div>
+<div>
+  <h6 id='iHeader'>Ingredients:</h6>
+  <ul class="list-group-horizontal">
+    {% for item in items %}
+      {%  if item != None %}
+        <li id='rand_ing' >{{item}}</li>
+      {% endif %}
+        {% endfor %}
+  </ul>
+</div>
+  <br>
+</div>
+<div id="rand_instruct">
+  <h5>Recipe:</h5>
+  {% for step in steps %}
+    <p>{{step}}</p>
+  {% endfor %}
+</div>
+
 {% endblock %}

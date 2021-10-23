@@ -12,24 +12,14 @@ import random
 import re
 import os
 from config import SECRET_KEY
-import psycopg2
 
 app = Flask(__name__)
 
-# uri = 'postgresql+psycopg2://username:password@host:port/dbname'
-# if uri and uri.startswith("postgres://"):
-#     uri = uri.replace("postgres://", "postgresql://", 1)
 ENV = 'prod'
 
 if ENV == 'dev':
     app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///lets_cook"
 else:
-    # DATABASE_URL = os.environ['DATABASE_URL']
-    # conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-    # app.config['SQLALCHEMY_DATABASE_URI']
-    # os.environ.get(
-    #     'DATABASE_URL', 'postgresql:///lets_cook')
-
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
         'DATABASE_URL', "postgres:///lets_cook").replace("://", "ql://", 1)
 
@@ -83,6 +73,11 @@ def random_recipe():
         api_id = resp['meals'][0]['idMeal']
         steps = re.split(r'STEP|[\n\r]',
                          resp['meals'][0]['strInstructions'])
+        items = []
+        for i in range(1, 20):
+            if resp['meals'][0][f'strIngredient{i}'] != None:
+                items.append(resp['meals'][0][f'strIngredient{i}'])
+                i = i + 1
 
         form = Filter()
 
@@ -99,14 +94,14 @@ def random_recipe():
                 resp_json = resp.json()
                 steps = re.split(r'STEP|[\r\n]',
                                  resp_json['meals'][0]['strInstructions'])
-                return render_template('random.html', i=0, resp=resp_json, api_id=api_id, form=form, steps=steps)
+                return render_template('random.html', i=0, resp=resp_json, api_id=api_id, form=form, steps=steps, items=items)
 
             except TypeError:
                 return redirect('/')
 
         else:
             i = 0
-            return render_template('random.html', i=i, resp=resp, api_id=api_id, form=form, steps=steps)
+            return render_template('random.html', i=i, resp=resp, api_id=api_id, form=form, steps=steps, items=items)
 
     except IntegrityError:
         return redirect('/')
@@ -115,28 +110,31 @@ def random_recipe():
 @app.route('/signup', methods=['GET', 'POST'])
 def create_user():
     """Register a new user"""
+    try:
+        if 'username' in session:
+            return redirect(f"/favorites/{session['username']}")
 
-    if 'username' in session:
-        # flash(session['username'])
-        return redirect(f"/favorites/{session['username']}")
+        form = SignUp()
 
-    form = SignUp()
+        if form.validate_on_submit():
+            first_name = form.first_name.data
+            last_name = form.last_name.data
+            username = form.username.data.lower()
+            password = form.password.data
 
-    if form.validate_on_submit():
-        first_name = form.first_name.data
-        last_name = form.last_name.data
-        username = form.username.data.lower()
-        password = form.password.data
+            new_user = Users.register(
+                username, password, first_name, last_name)
 
-        new_user = Users.register(
-            username, password, first_name, last_name)
+            db.session.commit()
+            do_login(new_user)
+            flash('User added!')
+            return redirect('/')
 
-        db.session.commit()
-        do_login(new_user)
-        flash('User added!')
-        return redirect('/')
+        else:
+            return render_template('signup.html', form=form)
 
-    else:
+    except IntegrityError:
+        flash('Username Already Exist!')
         return render_template('signup.html', form=form)
 
 

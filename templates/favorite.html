@@ -1,22 +1,4 @@
-{% extends 'base.html' %}{% block title %}<h1 class='display-3' id='fav_title'>{{fav.recipe_name}}</h1>{% endblock %} {% block content
+{% extends 'base.html' %}{% block title %}
+<h1 class="display-3" id="fav_title">{{fav.recipe_name}}</h1>
+{% endblock %} {% block content %} {% include 'recipe_card.html' %} {% endblock
 %}
-<div id='fav_card'>
-    <img id='card_img' src='{{fav.img}}'></img>
-    <div id='card_ing'>
-        <h5>Ingredients:</h5>
-        {% for item in items.items %}
-            {% if item != None %}
-                <li>{{item}}</li>
-            {% endif %}
-        {% endfor %}
-    </div>
-    <div id='card_inst'>
-        <h5><b>Recipe:</b></h5>
-        {% for step in instructions.get_steps %}
-            <p>{{step}}</p>
-        {% endfor %}
-    </div>
-   
-</div>
-<a href="/favorites/{{fav.user.username}}">Back to Favorites</a>
-{% endblock %}
