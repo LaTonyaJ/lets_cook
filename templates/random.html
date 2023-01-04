@@ -1,52 +1,53 @@
-{% extends 'base.html' %} {% block title %}
-<h1 class="display-2" id="rand_h1">Random Recipe</h1>
-{% endblock %} {% block content %}
-<form id="filter" method="POST" class="row g-3">
-  {{form.hidden_tag()}} {% for field in form if field.widget.input_type !=
-  'hidden' %}
-  <div class="col-auto">
-    <b>{{field.label(class_='form-label')}}</b>
-  </div>
-  <div class="col-auto">{{field(class_='form-control form-control-sm')}}</div>
-  {% endfor %}
-  <div class="col-auto">
-    <button class="btn btn-primary btn-sm">Filter</button>
-  </div>
-</form>
+{% extends "base.html" %} 
 
-<div id="rand_title">
-  <h4 class="display-4">
+{% block title %}
+  <h1 class="mealName">
     <i>{{resp['meals'][i]['strMeal']}}</i>
     <a id="like_meal" href="/liked/{{api_id}}"><small>&#10084</small></a>
-  </h4>
-</div>
+  </h1>
+{% endblock %} 
 
-<div id="rand_recipe">
-<div id="rand_img">
-  <img
-    
-    src="{{resp['meals'][i]['strMealThumb']}}"
-    alt="recipe image"
-    class="card-img-top"
-  />
-</div>
-<div>
-  <h6 id='iHeader'>Ingredients:</h6>
-  <ul class="list-group-horizontal">
-    {% for item in items %}
-      {%  if item != None %}
-        <li id='rand_ing' >{{item}}</li>
-      {% endif %}
-        {% endfor %}
-  </ul>
-</div>
-  <br>
-</div>
-<div id="rand_instruct">
-  <h5>Recipe:</h5>
-  {% for step in steps %}
-    <p>{{step}}</p>
+{% block content %}
+  <form id="filter" method="POST" class="row g-3">
+    {{form.hidden_tag()}} {% for field in form if field.widget.input_type !=
+    'hidden' %}
+    <div class="col-auto">
+        <b>{{field.label(class_='form-label')}}</b>
+      </div>
+    <div class="col-auto">{{field(class_='form-control form-control-sm')}}</div>
   {% endfor %}
-</div>
-
+    <div class="col-auto">
+      <button class="btn btn-primary btn-sm">Filter</button>
+    </div>
+  </form>
 {% endblock %}
+
+{% block recipeCard %}
+<div class="card mb-3 container row" id="recipe_card">
+  <img src="{{resp['meals'][i]['strMealThumb']}}" class="card-img-top" alt="Recipe Image" id="card_img">
+    <div class="card-list">
+      <div class="col-lg-6">
+        <h6 id='iHeader'>Ingredients:</h6>
+          <ul class="list-group-horizontal">
+            {% for item in items %}
+                {%  if item %}
+                  <li id='ing' >{{item}}</li>
+                {% endif %}
+            {% endfor %}
+          </ul>
+      </div>
+    <br>
+    </div>
+      <div id="card-par">
+        <h5>Recipe:</h5>
+        {% for step in steps %}
+          <p>{{step}}</p>
+        {% endfor %}
+      </div>
+</div>
+  {% endblock %}
+
+
+
+
+

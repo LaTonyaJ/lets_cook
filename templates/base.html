@@ -11,6 +11,9 @@
       integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
       crossorigin="anonymous"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cardo&display=swap" rel="stylesheet">
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
@@ -25,8 +28,10 @@
   </head>
   <body>
     <nav class="navbar">
-      <div class="navbar-brand">
-        <a href="/" class="nav-link"><b>Lets Cook</b></a>
+      <div>
+        <a href="/" class="nav-link">
+          <img src="/static/images/cutlery.png" class="navbar-brand"><b>Lets Cook</b>
+        </a>
       </div>
       {% if not g.user %}
       <div class="navbar-right">
@@ -48,8 +53,10 @@
       <div class="alert-light">{{ message }}</div>
       {% endfor %}
     </ul>
-    {% endif %} {% endwith %} {% block title %}{% endblock %} {% block content
-    %}{% endblock %}
+    {% endif %} {% endwith %} 
+    {% block title %}{% endblock %} 
+    {% block content %}{% endblock %}
+    {% block recipeCard %}{% endblock %}
     <script src="/static/app.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.js"></script>
   </body>

@@ -1,126 +1,62 @@
-.navbar {
-  background-color: rgb(80, 53, 3);
+body{
+  font-family: 'Cardo', serif;
 }
 
-.navbar-right {
-  margin-right: 2rem;
-}
-
-#rand_recipe {
-  width: 80%;
-  margin: auto;
-  display: flex;
-  flex-direction: row;
-  text-align: center;
-  justify-content: space-between;
-}
-
-#rand_title {
-  text-align: center;
-}
-
-#rand_img {
-  min-width: 300px;
-  min-height: 300px;
-}
-
-#rand_ing {
-  list-style: none;
-  flex-direction: column;
-}
-
-#rand_instruct {
-  margin: 1rem;
-}
-
-#rand_h1 {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-#fav-thumb {
-  width: 200px;
-  height: 200px;
-}
-
-html body {
-  background-color: rgba(96, 73, 6, 50%);
-}
-
-h4,
-div a {
-  text-decoration: none;
-}
-
-#signup {
+#card_img{
+  margin: 0 100px 100px 50px;
   width: 50%;
-  margin: auto;
-  margin-top: 5rem;
-  box-shadow: 5px 5px black;
-  background-color: #3a2c045e;
-  border-radius: 3px;
-  padding: 1rem;
+  border-radius: 50px;
 }
 
-#login {
-  width: 40%;
-  margin: auto;
-  margin-top: 5rem;
-  box-shadow: 5px 5px black;
-  background-color: #3a2c045e;
-  padding: 1rem;
+#recipe_card{
+  margin: 30px 50px 0 50px;
+  padding: 20px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border: none;
+  background-color: antiquewhite;
+  border-radius: 50px;
 }
 
-#filter {
-  margin: auto;
-  margin-bottom: 2rem;
-  width: 40%;
+h1 {
   text-align: center;
+  margin-bottom: 30px;
+  padding: 30px 0 45px 0;
 }
 
-#rand_instruct {
-  list-style: none;
-  text-align: start;
+.mealName{
+  text-align: center;
+  padding: 30px 0 45px 0;
+  font-size: 58px;
 }
 
-.thumb {
-  width: 200px;
-  height: 200px;
-  display: inline-block;
+form{
+  justify-content: center;
 }
 
-#fav_card {
+.navbar-brand{
+  height: 55px;
+}
+
+nav{
+  font-size: 25px;
+  background-color: rgb(150, 65, 65);
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+nav a{
+  color: antiquewhite;
+}
+
+.favs-thumbnail{
+  height: 300px;
+  width: 300px;
+  border-radius: 30px;
+}
+
+#fav-thumbs{
   display: flex;
   flex-wrap: wrap;
-  margin: auto;
-  width: 55%;
-  justify-content: space-between;
-}
-
-#card_img {
-  width: auto;
-  height: 400px;
-  max-width: 400px;
-}
-
-#card_ing {
-  /* flex-wrap: wrap; */
-  list-style: none;
-  text-align: left;
-}
-
-#fav_title {
-  text-align: center;
-}
-
-.remove {
-  text-align: center;
-}
-
-button {
-  border-radius: 20px;
-}
-
-#login a {
-  color: white;
+  justify-content: space-around;
 }

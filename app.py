@@ -15,7 +15,7 @@ from config import SECRET_KEY
 
 app = Flask(__name__)
 
-ENV = 'prod'
+ENV = 'dev'
 
 if ENV == 'dev':
     app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///lets_cook"
@@ -30,6 +30,7 @@ connect_db(app)
 
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', SECRET_KEY)
 debug = DebugToolbarExtension(app)
+BASE_URL = "http://www.themealdb.com/api/json/v1/1"
 
 
 @app.before_request
@@ -67,7 +68,8 @@ def homepage():
 def random_recipe():
 
     try:
-        rr = requests.get('http://www.themealdb.com/api/json/v1/1/random.php')
+        # response results 
+        rr = requests.get(f'{BASE_URL}/random.php')
         resp = rr.json()
 
         api_id = resp['meals'][0]['idMeal']
@@ -85,12 +87,12 @@ def random_recipe():
             try:
                 category = form.category.data
                 rr = requests.get(
-                    f'http://www.themealdb.com/api/json/v1/1/filter.php?c={category}')
+                    f'{BASE_URL}/filter.php?c={category}')
                 resp0 = rr.json()
                 i = random.randrange(10)
                 api_id = resp0['meals'][i]['idMeal']
                 resp = requests.get(
-                    f'http://www.themealdb.com/api/json/v1/1/lookup.php?i={api_id}')
+                    f'{BASE_URL}/lookup.php?i={api_id}')
                 resp_json = resp.json()
                 steps = re.split(r'STEP|[\r\n]',
                                  resp_json['meals'][0]['strInstructions'])
@@ -195,7 +197,7 @@ def liked(api_id):
 
         # add meal to fav
         meal = requests.get(
-            f"http://www.themealdb.com/api/json/v1/1/lookup.php?i={api_id}")
+            f"{BASE_URL}/lookup.php?i={api_id}")
         # pdb.set_trace()
         user = Users.query.filter_by(username=session['username']).first()
         # get meal by id
@@ -224,7 +226,6 @@ def liked(api_id):
         return redirect(f"/favorites/{session['username']}")
 
     except IntegrityError:
-        print()
         flash('Favorite not Added!')
         return redirect('/')
 
